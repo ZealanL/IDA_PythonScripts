@@ -22,17 +22,20 @@ def GetFuncVirtualRef(func):
     xrefs = list(idautils.XrefsTo(func.start_ea))
     
     if len(xrefs) != 1:
-        return
+        return 0
     
-	auto xref = xrefs[0]
+    xref = xrefs[0]
+    if (xref.frm is None):
+        return 0
+    
     xrefSeg = GetSegment(xref.frm)
 
     segName = idc.get_segm_name(xrefSeg)
     if (segName != ".rdata"):
         return 0
-	else: 
-		return xrefs[0].frm
- 
+    else: 
+        return xref.frm
+
 def Clean(s):
     # Just in case
     return s.replace("\n", "_").replace("\r", "_").replace("=", "_")
@@ -67,10 +70,6 @@ for ea in Functions():
         continue
                 
     addr = vtableRef
-    seg = idaapi.getseg(addr)
-    
-    prevHead = idc.prev_head(addr)
-    
     while (addr >= seg.start_ea):
         comment = get_name(addr, False)
         if (comment is not None) and (len(comment) > 0):
