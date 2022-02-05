@@ -81,7 +81,7 @@ for ea in Functions():
             
                 index = (vtableRef - addr) / 4
                 if (index != int(index)):
-                    break # Big fail
+                    break # This should NEVER happen
                     
                 print(Clean(funcName) + "=" + CleanVTableName(dName) + "=" + str(int(index)))
                 break
