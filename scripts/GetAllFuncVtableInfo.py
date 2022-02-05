@@ -1,7 +1,7 @@
 # GetAllFuncVtableInfo
 # PURPOSE: Find all reversed functions that are virtual, print out their table name and inex
 # OUTPUT FORMAT: "funcName=tableName=indexInt"
-# NOTE: Functions might have multiple vtable references, these will be IGNORED
+# NOTE: Some functions might have multiple vtable references, these will be IGNORED
 
 import idc
 import idautils
