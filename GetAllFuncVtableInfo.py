@@ -87,4 +87,3 @@ for ea in Functions():
                 break
                 
         addr = idc.prev_head(addr)
-        
