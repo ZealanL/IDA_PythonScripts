@@ -1,10 +1,12 @@
 # GetAllFuncVtableInfo
 # PURPOSE: Find all reversed functions that are virtual, print out their table name and inex
 # OUTPUT FORMAT: "funcName=tableName=indexInt"
+# NOTE: Functions might have multiple vtable references, this just outputs the first one
 
 import idc
 import idautils
 
+# Get segment object from address in the segment
 def GetSegment(ea):
     for s in idautils.Segments():
         start = idc.get_segm_start(s)
@@ -14,11 +16,9 @@ def GetSegment(ea):
     
     return None
 
+# Get a function's vtable reference address
 # Returns 0 if func is not virtual
 def GetFuncVirtualRef(func):
-    xrefs = list(idautils.XrefsTo(func.start_ea))
-    
-    rdataRefs = 0
     xrefs = list(idautils.XrefsTo(func.start_ea))
     
     if len(xrefs) < 1:
@@ -26,7 +26,6 @@ def GetFuncVirtualRef(func):
     
     # first pass
     for xref in xrefs:
-
         xrefSeg = GetSegment(xref.frm)
 
         segName = idc.get_segm_name(xrefSeg)
@@ -45,6 +44,7 @@ def CleanVTableName(s):
 
 ##########################################
 
+# MAIN AREA
 
 for ea in Functions():
     func = ida_funcs.get_func(ea)
